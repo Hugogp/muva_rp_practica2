@@ -9,7 +9,7 @@ from src.CustomDataset import CustomDataset
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # Hyper parameters
-num_epochs = 5
+num_epochs = 1
 num_classes = 5
 batch_size = 100
 learning_rate = 0.001
@@ -54,3 +54,6 @@ for epoch in range(num_epochs):
 
     print('Epoch [{}/{}], Loss: {:.4f}'
            .format(epoch+1, num_epochs, loss.item()))
+
+# Save the model checkpoint
+torch.save(model.state_dict(), 'model_cnn.ckpt')
