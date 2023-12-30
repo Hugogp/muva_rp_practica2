@@ -8,14 +8,9 @@ import cv2 as cv
 
 
 class CustomDataset(torch.utils.data.Dataset):
-    def __init__(self, paths: [str]):
-        self.images = []
-        self.labels = []
-
-        for path in paths:
-            contents = os.listdir(path)
-            self.images.extend([os.path.join(path, content_path) for content_path in contents])
-            self.labels.extend([self.get_label(path)] * len(contents))
+    def __init__(self, paths: [str], labels: [str]):
+        self.images = paths
+        self.labels = labels
 
         self.total_images = len(self.images)
 
