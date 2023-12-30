@@ -1,8 +1,7 @@
 import os
-from pathlib import Path
 import torch
-import torch.nn as nn
 from sklearn.model_selection import train_test_split
+from datetime import datetime
 
 from src.CustomDataset import CustomDataset
 
@@ -39,4 +38,12 @@ def get_dataloaders(train_path: str, batch_size: int):
     return train_loader, test_loader
 
 
+def save_model(folder: str, model):
+    os.mkdir(folder)
 
+    time = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
+    file_name = f"{model.__class__.__name__}_{time}.ckpt"
+
+    full_path = os.path.join(folder, file_name)
+    print(full_path)
+    torch.save(model.state_dict(), full_path)
