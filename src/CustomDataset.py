@@ -1,10 +1,8 @@
-import os
-from pathlib import Path
-
+import cv2 as cv
 import numpy as np
 import torch
 import torchvision.transforms as transforms
-import cv2 as cv
+from pathlib import Path
 
 
 class CustomDataset(torch.utils.data.Dataset):

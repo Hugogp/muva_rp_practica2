@@ -1,8 +1,5 @@
-import os
-from pathlib import Path
 import torch
 import torch.nn as nn
-from sklearn.model_selection import train_test_split
 
 from src.utils import get_dataloaders
 
@@ -18,7 +15,7 @@ def train_nn(model, train_path: str, epochs: int, num_classes: int, batch_size: 
 
     _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion, optimizer=optimizer)
 
-    _display_test_score(test_loader, device=device, model=model)
+    _display_test_score(test_loader, model=model, device=device)
 
 
 def _run_training(train_loader, num_epochs, device, model, criterion, optimizer):
