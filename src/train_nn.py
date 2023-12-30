@@ -1,12 +1,12 @@
+import time
+
 import torch
 import torch.nn as nn
 
 from src.utils import get_dataloaders
 
 
-def train_nn(model, train_path: str, epochs: int, num_classes: int, batch_size: int, learning_rate: float):
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-
+def train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device):
     # Loss and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -22,6 +22,8 @@ def _run_training(train_loader, num_epochs, device, model, criterion, optimizer)
     loss = None
 
     for epoch in range(num_epochs):
+        start_time = time.time()
+
         for i, (images, labels) in enumerate(train_loader):
             images = images.to(device)
 
@@ -37,7 +39,9 @@ def _run_training(train_loader, num_epochs, device, model, criterion, optimizer)
             loss.backward()
             optimizer.step()
 
-        print('Epoch [{}/{}], Loss: {:.4f}'.format(epoch + 1, num_epochs, loss.item()))
+        time_taken = time.time() - start_time
+
+        print('Epoch [{}/{}], Loss: {:.4f} in {:.2f} seconds'.format(epoch + 1, num_epochs, loss.item(), time_taken))
 
 
 def _display_test_score(test_loader, device, model):
