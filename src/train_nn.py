@@ -6,7 +6,7 @@ import torch.nn as nn
 from src.utils import get_dataloaders
 
 
-def train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device):
+def train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device) -> float:
     # Loss and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -15,7 +15,10 @@ def train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate
 
     _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion, optimizer=optimizer)
 
-    _display_test_score(test_loader, model=model, device=device)
+    acc, total = _display_test_score(test_loader, model=model, device=device)
+
+    print('Accuracy of the network on the {} test images: {} %'.format(total, acc))
+    return acc
 
 
 def _run_training(train_loader, num_epochs, device, model, criterion, optimizer):
@@ -25,9 +28,8 @@ def _run_training(train_loader, num_epochs, device, model, criterion, optimizer)
         start_time = time.time()
 
         for i, (images, labels) in enumerate(train_loader):
+            # Move images and labels to the device
             images = images.to(device)
-
-            # Convert string labels to numerical indices
             labels = labels.to(device)
 
             # Forward pass
@@ -64,4 +66,4 @@ def _display_test_score(test_loader, device, model):
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
-        print('Accuracy of the network on the {} test images: {} %'.format(total, 100 * correct / total))
+    return 100 * correct / total, total

@@ -38,15 +38,19 @@ def get_dataloaders(train_path: str, batch_size: int):
     return train_loader, test_loader
 
 
-def save_model(folder: str, model):
+def save_model(folder: str, model, hyperparameters: dict):
     if not os.path.exists(folder):
         os.mkdir(folder)
 
     time = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
-    file_name = f"{model.__class__.__name__}_{time}.ckpt"
+    file_name = f"{model.__class__.__name__}_{time}"
 
     full_path = os.path.join(folder, file_name)
 
     print(f"Model saved at \"{full_path}\"")
 
-    torch.save(model.state_dict(), full_path)
+    torch.save(model.state_dict(), f"{full_path}.ckpt")
+
+    with open(f"{full_path}.txt", "w") as file:
+        for key, value in hyperparameters.items():
+            file.write(f"{key}: {value}\n")
