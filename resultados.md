@@ -1,7 +1,10 @@
 # cnn
-## Epoch [5/5], Loss: 1.6132
-num_epochs = 5\
-num_classes = 5\
-batch_size = 100\
-learning_rate = 0.001\
-
+num_epochs = (mas epocas mejor)
+batch_size = (mas o menos 200)
+learning_rate = (-3 o -5)
+# resnet
+una mierda
+# alexnet
+num_epochs = (mas epocas mejor)
+batch_size = (700)
+learning_rate = (-4 alrededor de 200 o menso si mas epocas)
