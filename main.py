@@ -34,5 +34,5 @@ save_model("./outputs", model, {
     "num_epochs": num_epochs,
     "batch_size": batch_size,
     "learning_rate": learning_rate,
-    "accuracy": acc,
+    "accuracy": accuracy,
 })
