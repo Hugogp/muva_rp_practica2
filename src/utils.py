@@ -43,7 +43,7 @@ def save_model(folder: str, model, hyperparameters: dict):
         os.mkdir(folder)
 
     time = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
-    file_name = f"{model.__class__.__name__}_{time}"
+    file_name = f"{get_model_name(model)}_{time}"
 
     full_path = os.path.join(folder, file_name)
 
@@ -54,3 +54,7 @@ def save_model(folder: str, model, hyperparameters: dict):
     with open(f"{full_path}.txt", "w") as file:
         for key, value in hyperparameters.items():
             file.write(f"{key}: {value}\n")
+
+
+def get_model_name(model) -> str:
+    return model.__class__.__name__
