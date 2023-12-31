@@ -13,9 +13,9 @@ from src.utils import save_model, get_model_name, get_output_file_without_ext, s
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # Hyper parameters
-num_epochs = 200
-batch_size = 700
-learning_rate = 0.0001
+num_epochs = 5
+batch_size = 100
+learning_rate = 1e-4
 
 # Number of classes to classify
 num_classes = 5
@@ -52,4 +52,4 @@ save_hyperparameters(output_path, {
 })
 
 # Display & save the loss graph
-display_and_save_losses(losses, f"{output_path}.png")
+display_and_save_losses(losses, "{}: {:.4f}% accuracy".format(get_model_name(model), accuracy), f"{output_path}.png")

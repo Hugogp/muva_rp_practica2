@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def display_and_save_losses(losses: [float], save_path=None):
+def display_and_save_losses(losses: [float], title: str, save_path=None):
     # plt.style.use('_mpl-gallery')
 
     x = [None] * len(losses)
@@ -15,6 +15,7 @@ def display_and_save_losses(losses: [float], save_path=None):
     # plot
     fig, ax = plt.subplots()
     ax.plot(x, y, linewidth=2.0)
+    plt.title(title)
 
     if save_path:
         plt.savefig(save_path)
