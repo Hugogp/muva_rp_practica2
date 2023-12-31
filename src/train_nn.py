@@ -1,27 +1,27 @@
 import time
-
 import torch
 import torch.nn as nn
 
 from src.utils import get_dataloaders
 
 
-def train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device) -> (float, int):
+def train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device) -> (float, int, [float]):
     # Loss and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
     train_loader, test_loader = get_dataloaders(train_path, batch_size)
 
-    _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion, optimizer=optimizer)
+    losses = _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion, optimizer=optimizer)
 
     accuracy, total_images_test = _calculate_test_score(test_loader, model=model, device=device)
 
-    return accuracy, total_images_test
+    return accuracy, total_images_test, losses
 
 
-def _run_training(train_loader, num_epochs, device, model, criterion, optimizer):
+def _run_training(train_loader, num_epochs, device, model, criterion, optimizer) -> [float]:
     loss = None
+    losses = []
 
     for epoch in range(num_epochs):
         start_time = time.time()
@@ -42,7 +42,11 @@ def _run_training(train_loader, num_epochs, device, model, criterion, optimizer)
 
         time_taken = time.time() - start_time
 
+        losses.append(loss.item())
+
         print('Epoch [{}/{}], Loss: {:.4f} in {:.2f} seconds'.format(epoch + 1, num_epochs, loss.item(), time_taken))
+
+    return losses
 
 
 def _calculate_test_score(test_loader, device, model) -> (float, int):
