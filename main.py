@@ -22,7 +22,10 @@ model = CNN(num_classes).to(device)
 print(f"Training \"{get_model_name(model)}\" on \"{device}\"...")
 
 train_path = "images/train"
-acc = train_nn(model, train_path=train_path, epochs=num_epochs, batch_size=batch_size, learning_rate=learning_rate, device=device)
+accuracy, total_test_images = train_nn(model, train_path=train_path, epochs=num_epochs, batch_size=batch_size,
+                                       learning_rate=learning_rate, device=device)
+
+print('Accuracy of the network on the {} test images: {} %'.format(accuracy, total_test_images))
 
 # Save the model
 print("Saving model")

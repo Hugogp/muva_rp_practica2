@@ -6,7 +6,7 @@ import torch.nn as nn
 from src.utils import get_dataloaders
 
 
-def train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device) -> float:
+def train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device) -> (float, int):
     # Loss and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -15,10 +15,9 @@ def train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate
 
     _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion, optimizer=optimizer)
 
-    acc, total = _display_test_score(test_loader, model=model, device=device)
+    accuracy, total_images_test = _calculate_test_score(test_loader, model=model, device=device)
 
-    print('Accuracy of the network on the {} test images: {} %'.format(total, acc))
-    return acc
+    return accuracy, total_images_test
 
 
 def _run_training(train_loader, num_epochs, device, model, criterion, optimizer):
@@ -46,7 +45,7 @@ def _run_training(train_loader, num_epochs, device, model, criterion, optimizer)
         print('Epoch [{}/{}], Loss: {:.4f} in {:.2f} seconds'.format(epoch + 1, num_epochs, loss.item(), time_taken))
 
 
-def _display_test_score(test_loader, device, model):
+def _calculate_test_score(test_loader, device, model) -> (float, int):
     # Test the model
     # In test phase, we don't need to compute gradients (for memory efficiency)
     with torch.no_grad():
