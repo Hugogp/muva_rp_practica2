@@ -71,4 +71,5 @@ class AlexNet(nn.Module):
         # print(x.size())
         x = x.view(-1, 256 * 3 * 3)  # reduce the dimensions for linear layer input
         # x = x.view(x.size(0), -1)
-        return self.classifier(x)
+        x = self.classifier(x)
+        return nn.functional.softmax(x, dim=1)

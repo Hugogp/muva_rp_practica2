@@ -52,6 +52,7 @@ def _run_training(train_loader, num_epochs, device, model, criterion, optimizer)
 def _calculate_test_score(test_loader, device, model) -> (float, int):
     # Test the model
     # In test phase, we don't need to compute gradients (for memory efficiency)
+
     with torch.no_grad():
         correct = 0
         total = 0

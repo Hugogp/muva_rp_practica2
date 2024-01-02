@@ -13,8 +13,8 @@ from src.utils import save_model, get_model_name, get_output_file_without_ext, s
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # Hyper parameters
-num_epochs = 5
-batch_size = 100
+num_epochs = 50
+batch_size = 500
 learning_rate = 1e-4
 
 # Number of classes to classify
