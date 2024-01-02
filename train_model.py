@@ -1,13 +1,11 @@
-
-import os
 import torch
-from src.graphs import display_and_save_losses
 
 from src.neuralnetworks.AlexNet import AlexNet
 from src.neuralnetworks.CNN import CNN
 from src.neuralnetworks.cnn_extra_layers import CNNExtra
-from src.train_nn import train_test_nn, only_train_nn
-from src.utils import save_model, get_model_name, get_output_file_without_ext, save_hyperparameters, save_training
+from src.train_nn import only_train_nn
+from src.utils import get_model_name, save_training
+
 
 # Select device (use CUDA if available)
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -16,7 +14,6 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 num_epochs = 1000
 batch_size = 500
 learning_rate = 1e-5
-
 
 # Number of classes to classify
 num_classes = 5
@@ -38,4 +35,3 @@ save_training(model, "./outputs/full", -1, losses, {
     "learning_rate": learning_rate,
     "accuracy": -1,
 })
-

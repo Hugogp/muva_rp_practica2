@@ -70,7 +70,6 @@ def _calculate_test_score(test_loader, device, model) -> (float, int):
         total = 0
 
         for images, labels in test_loader:
-            # images = images.reshape(-1, 150*150).to(device)
             images = images.view(-1, 3, 150, 150).to(device)
 
             # Convert string labels to numerical indices
@@ -80,8 +79,6 @@ def _calculate_test_score(test_loader, device, model) -> (float, int):
             _, predicted = torch.max(outputs.data, 1)
 
             total += labels.size(0)
-            print(total)
             correct += (predicted == labels).sum().item()
-            print(correct, predicted == labels)
 
     return 100 * correct / total, total

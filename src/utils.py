@@ -16,7 +16,7 @@ def get_dataloaders(train_path: str, batch_size: int):
     )
 
     train_loader = generate_data_loader(train_data_paths, train_labels, batch_size)
-    test_loader = generate_data_loader(test_data_paths, test_labels, batch_size)
+    test_loader = generate_data_loader(test_data_paths, test_labels, 1)
 
     return train_loader, test_loader
 
