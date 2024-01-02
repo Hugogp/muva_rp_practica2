@@ -2,10 +2,10 @@ import time
 import torch
 import torch.nn as nn
 
-from src.utils import get_dataloaders
+from src.utils import get_dataloaders, get_training_data, generate_data_loader
 
 
-def train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device) -> (float, int, [float]):
+def train_test_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device) -> (float, int, [float]):
     # Loss and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -17,6 +17,17 @@ def train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate
     accuracy, total_images_test = _calculate_test_score(test_loader, model=model, device=device)
 
     return accuracy, total_images_test, losses
+
+
+def only_train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device) -> [float]:
+    # Loss and optimizer
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+    training_paths, training_labels = get_training_data(train_path)
+    train_loader = generate_data_loader(training_paths, training_labels, batch_size)
+
+    return _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion, optimizer=optimizer)
 
 
 def _run_training(train_loader, num_epochs, device, model, criterion, optimizer) -> [float]:
@@ -52,6 +63,7 @@ def _run_training(train_loader, num_epochs, device, model, criterion, optimizer)
 def _calculate_test_score(test_loader, device, model) -> (float, int):
     # Test the model
     # In test phase, we don't need to compute gradients (for memory efficiency)
+    model.eval()
 
     with torch.no_grad():
         correct = 0
@@ -68,6 +80,8 @@ def _calculate_test_score(test_loader, device, model) -> (float, int):
             _, predicted = torch.max(outputs.data, 1)
 
             total += labels.size(0)
+            print(total)
             correct += (predicted == labels).sum().item()
+            print(correct, predicted == labels)
 
     return 100 * correct / total, total

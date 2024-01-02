@@ -4,21 +4,21 @@ import numpy as np
 import torch
 from natsort import natsorted
 
+from src.labels import index_to_label, get_labels_distribution
 from src.neuralnetworks.AlexNet import AlexNet
 from src.neuralnetworks.CNN import CNN
 from src.neuralnetworks.cnn_extra_layers import CNNExtra
 
-# PATH = "./outputs/CNNExtra_2023_12_31_12_48_00.ckpt"
-PATH = "./outputs/AlexNet_2024_01_02_13_59_38.ckpt"
-ipath = "./images/test"
+
+# path = "./outputs/CNNExtra_2023_12_31_12_48_00.ckpt"
+model_path = "./outputs/full/CNNExtra_2024_01_02_17_32_53.pt"
+test_dir = "./images/test"
 images = []
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
-idx = {0: 'forest', 1: 'fungus', 2: 'grass', 3: 'leaves', 4: 'salad'}
-dicc = {'forest': 0, 'fungus': 0, 'grass': 0, 'leaves': 0, 'salad': 0}
-for image_path in natsorted(os.listdir(ipath)):
-    full_image_path = os.path.join(ipath, image_path)
+for image_path in natsorted(os.listdir(test_dir)):
+    full_image_path = os.path.join(test_dir, image_path)
 
     if not image_path.endswith(".jpg"):
         continue
@@ -32,26 +32,23 @@ for image_path in natsorted(os.listdir(ipath)):
     elif image.dtype != np.float32():
         image = image.astype(np.float32())
 
-    print(np.max(image), np.min(image))
-
     images.append(image)
 
-model = AlexNet(num_classes=5).to(device)
-model.load_state_dict(torch.load(PATH))
+
+model = torch.load(model_path)
 model.eval()
 
 images = torch.from_numpy(np.array(images)).view(-1, 3, 150, 150).to(device)
 
 labels = []
 for image in images:
-    outputs = model(image)
-    print(outputs)
+    outputs = model(image.unsqueeze(0))
+
     _, predicted = torch.max(outputs.data, 1)
-    prediction = idx[predicted[0].item()]
+    prediction = index_to_label(predicted[0].item())
 
     labels.append(prediction)
 
+print(get_labels_distribution(labels))
+
 np.savetxt("Competicion2.txt", labels, fmt="%s", delimiter=",")
-for label in labels:
-    dicc[label] += 1
-print(dicc)
