@@ -1,10 +1,11 @@
+import matplotlib
 import numpy as np
 from matplotlib import pyplot as plt
 
 
 def display_and_save_losses(losses: [float], title: str, save_path=None):
     # plt.style.use('_mpl-gallery')
-
+    matplotlib.use('Agg')
     x = [None] * len(losses)
     y = [None] * len(losses)
 

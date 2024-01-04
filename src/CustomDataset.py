@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 import torch
-import torchvision.transforms as transforms
+from torchvision.transforms import v2
 from pathlib import Path
 
 
@@ -25,7 +25,13 @@ class CustomDataset(torch.utils.data.Dataset):
         elif img.dtype != np.float32():
             img = img.astype(np.float32())
 
-        img = transforms.ToTensor()(img)
+        img = v2.Compose([
+            v2.ToImage(),
+            v2.RandomHorizontalFlip(),
+            v2.RandomRotation(10),
+            # v2.RandomCrop(32, padding=4),
+            v2.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        ])(img)
 
         return img, label
 
