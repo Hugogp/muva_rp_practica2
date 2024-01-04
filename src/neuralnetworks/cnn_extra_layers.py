@@ -34,7 +34,8 @@ class CNNExtra(nn.Module):
             nn.MaxPool2d(kernel_size=2, stride=2)
         )
 
-        self.fc = nn.Linear(9*9*128, num_classes)
+        self.fc1 = nn.Linear(9 * 9 * 128, (9 * 9 * 128) // 2)
+        self.fc2 = nn.Linear((9 * 9 * 128) // 2, num_classes)
 
     def forward(self, x):
         out = self.layer1(x)
@@ -44,7 +45,8 @@ class CNNExtra(nn.Module):
 
         out = out.reshape(out.size(0), -1)
 
-        out = self.fc(out)
+        out = nn.functional.relu(self.fc1(out))
+        out = self.fc2(out)
 
         out = nn.functional.softmax(out, dim=1)
 

@@ -4,6 +4,7 @@ import numpy as np
 import torch
 from natsort import natsorted
 from torchvision.transforms import v2
+
 from src.labels import index_to_label, get_labels_distribution
 from src.neuralnetworks.AlexNet import AlexNet
 from src.neuralnetworks.CNN import CNN
@@ -13,6 +14,7 @@ from src.neuralnetworks.cnn_extra_layers import CNNExtra
 model_path = "./outputs/full/ReXNetV1_2024_01_02_20_03_35.pt"
 # model_path = "./outputs/full/CNNExtra_2024_01_02_18_35_11.pt"
 # model_path = "./outputs/full/AlexNet_2024_01_02_20_43_38.pt"
+# path = "./outputs/CNNExtra_2023_12_31_12_48_00.ckpt"
 test_dir = "./images/test"
 images = []
 

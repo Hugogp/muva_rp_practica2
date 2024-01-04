@@ -12,8 +12,8 @@ from src.utils import get_model_name, save_training
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # Hyper parameters
-num_epochs = 100
-batch_size = 700
+num_epochs = 1000
+batch_size = 512
 learning_rate = 1e-5
 
 # Number of classes to classify
