@@ -12,7 +12,7 @@ from src.utils import get_model_name, save_training
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # Hyper parameters
-num_epochs = 1000
+num_epochs = 2
 batch_size = 512
 learning_rate = 1e-5
 
@@ -20,7 +20,8 @@ learning_rate = 1e-5
 num_classes = 5
 
 # Select the model
-model = AlexNet(num_classes).to(device)
+model = CNNExtra(num_classes).to(device)
+# model = torch.load("outputs/full/AlexNet_2024_01_04_22_26_34.pt")
 
 # Train the model
 print(f"Training \"{get_model_name(model)}\" on \"{device}\"...")

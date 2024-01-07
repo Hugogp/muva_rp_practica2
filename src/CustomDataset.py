@@ -18,12 +18,7 @@ class CustomDataset(torch.utils.data.Dataset):
 
         label = self.labels[index]
 
-        img = cv.resize(img, (150, 150))
-
-        if img.dtype == np.uint8():
-            img = img.astype(np.float32()) / 255.0
-        elif img.dtype != np.float32():
-            img = img.astype(np.float32())
+        img = CustomDataset.custom_normalize(img)
 
         img = v2.Compose([
             v2.ToImage(),
@@ -34,6 +29,17 @@ class CustomDataset(torch.utils.data.Dataset):
         ])(img)
 
         return img, label
+
+    @staticmethod
+    def custom_normalize(img) -> []:
+        img = cv.resize(img, (150, 150))
+
+        if img.dtype == np.uint8():
+            img = img.astype(np.float32()) / 255.0
+        elif img.dtype != np.float32():
+            img = img.astype(np.float32())
+
+        return img
 
     def __len__(self):
         return self.total_images

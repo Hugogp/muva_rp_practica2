@@ -34,6 +34,8 @@ def _run_training(train_loader, num_epochs, device, model, criterion, optimizer)
     loss = None
     losses = []
 
+    model.train()
+
     for epoch in range(num_epochs):
         start_time = time.time()
 

@@ -1,7 +1,7 @@
 
 
 _label_to_index_dict = {'forest': 0, 'fungus': 1, 'grass': 2, 'leaves': 3, 'salad': 4}
-_index_to_label_dict = {0: 'forest', 1: 'fungus', 2: 'grass', 3: 'leaves', 4: 'salad'}
+_index_to_label_dict = {0: 'bosque', 1: 'setas', 2: 'hierba', 3: 'hojas', 4: 'ensalada'}
 
 
 def label_to_index(label: str) -> int:
@@ -13,7 +13,7 @@ def index_to_label(index: int) -> str:
 
 
 def get_labels_distribution(labels: [str]) -> dict:
-    labels_dist = {'forest': 0, 'fungus': 0, 'grass': 0, 'leaves': 0, 'salad': 0}
+    labels_dist = {'bosque': 0, 'setas': 0, 'hierba': 0, 'hojas': 0, 'ensalada': 0}
 
     for label in labels:
         labels_dist[label] += 1

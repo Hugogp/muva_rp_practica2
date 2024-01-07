@@ -5,13 +5,14 @@ import torch
 from natsort import natsorted
 from torchvision.transforms import v2
 
+from src.CustomDataset import CustomDataset
 from src.labels import index_to_label, get_labels_distribution
 from src.neuralnetworks.AlexNet import AlexNet
 from src.neuralnetworks.CNN import CNN
 from src.neuralnetworks.cnn_extra_layers import CNNExtra
 
 
-model_path = "./outputs/full/ReXNetV1_2024_01_02_20_03_35.pt"
+model_path = "./outputs/full/CNNExtra_2024_01_04_22_28_13.pt"
 # model_path = "./outputs/full/CNNExtra_2024_01_02_18_35_11.pt"
 # model_path = "./outputs/full/AlexNet_2024_01_02_20_43_38.pt"
 # path = "./outputs/CNNExtra_2023_12_31_12_48_00.ckpt"
@@ -27,13 +28,7 @@ for image_path in natsorted(os.listdir(test_dir)):
         continue
 
     image = cv.imread(full_image_path, cv.IMREAD_COLOR)
-
-    image = cv.resize(image, (150, 150))
-
-    if image.dtype == np.uint8():
-        image = image.astype(np.float32()) / 255.0
-    elif image.dtype != np.float32():
-        image = image.astype(np.float32())
+    image = CustomDataset.custom_normalize(image)
 
     image = v2.Compose([
         v2.ToImage(),
@@ -42,6 +37,7 @@ for image_path in natsorted(os.listdir(test_dir)):
 
     images.append(image)
 
+print(images[0].shape)
 
 model = torch.load(model_path)
 model.eval()
