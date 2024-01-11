@@ -1,5 +1,6 @@
 import torch
 
+from src.graphs import display_and_save_losses
 from src.neuralnetworks.AlexNet import AlexNet
 from src.neuralnetworks.CNN import CNN
 from src.neuralnetworks.RexNet import ReXNetV1
@@ -12,7 +13,7 @@ from src.utils import get_model_name, save_training
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # Hyper parameters
-num_epochs = 2
+num_epochs = 10
 batch_size = 512
 learning_rate = 1e-5
 
@@ -28,7 +29,7 @@ print(f"Training \"{get_model_name(model)}\" on \"{device}\"...")
 
 train_path = "images/train"
 losses = only_train_nn(model, train_path=train_path, epochs=num_epochs, batch_size=batch_size,
-                       learning_rate=learning_rate, device=device)
+                                    learning_rate=learning_rate, device=device)
 
 # Save the model
 save_training(model, "./outputs/full", -1, losses, {
@@ -36,4 +37,4 @@ save_training(model, "./outputs/full", -1, losses, {
     "batch_size": batch_size,
     "learning_rate": learning_rate,
     "accuracy": -1,
-})
+}, test_losses=None)

@@ -5,18 +5,19 @@ import torch.nn as nn
 from src.utils import get_dataloaders, get_training_data, generate_data_loader
 
 
-def train_test_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device) -> (float, int, [float]):
+def train_test_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device) -> (float, int, [float], [float]):
     # Loss and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
     train_loader, test_loader = get_dataloaders(train_path, batch_size)
 
-    losses = _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion, optimizer=optimizer)
+    losses, test_losses = _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion,
+                                        optimizer=optimizer, test_loader=test_loader)
 
     accuracy, total_images_test = _calculate_test_score(test_loader, model=model, device=device)
 
-    return accuracy, total_images_test, losses
+    return accuracy, total_images_test, losses, test_losses
 
 
 def only_train_nn(model, train_path: str, epochs: int, batch_size: int, learning_rate: float, device) -> [float]:
@@ -27,12 +28,16 @@ def only_train_nn(model, train_path: str, epochs: int, batch_size: int, learning
     training_paths, training_labels = get_training_data(train_path)
     train_loader = generate_data_loader(training_paths, training_labels, batch_size)
 
-    return _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion, optimizer=optimizer)
+    losses, _ = _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion,
+                              optimizer=optimizer, test_loader=None)
+
+    return losses
 
 
-def _run_training(train_loader, num_epochs, device, model, criterion, optimizer) -> [float]:
+def _run_training(train_loader, num_epochs, device, model, criterion, optimizer, test_loader=None) -> [float]:
     loss = None
     losses = []
+    test_losses = [] if test_loader else None
 
     model.train()
 
@@ -57,9 +62,19 @@ def _run_training(train_loader, num_epochs, device, model, criterion, optimizer)
 
         losses.append(loss.item())
 
-        print('Epoch [{}/{}], Loss: {:.4f} in {:.2f} seconds'.format(epoch + 1, num_epochs, loss.item(), time_taken))
+        print("Epoch [{}/{}], Loss: {:.4f} in {:.2f} seconds".format(epoch + 1, num_epochs, loss.item(), time_taken))
 
-    return losses
+        # If the test_loader is provided, use it to calculate the Test Loss
+        if test_loader:
+            test_start_time = time.time()
+            test_loss = _calculate_loss_score(model, test_loader, criterion, device)
+            test_time = time.time() - test_start_time
+
+            test_losses.append(test_loss)
+
+            print("[TEST] Epoch [{}/{}], Loss: {:.4f} in {:.2f} seconds".format(epoch + 1, num_epochs, test_loss, test_time))
+
+    return losses, test_losses
 
 
 def _calculate_test_score(test_loader, device, model) -> (float, int):
@@ -84,3 +99,21 @@ def _calculate_test_score(test_loader, device, model) -> (float, int):
             correct += (predicted == labels).sum().item()
 
     return 100 * correct / total, total
+
+
+def _calculate_loss_score(model, test_loader, criterion, device) -> float:
+    model.eval()
+
+    total_loss = 0.0
+
+    with torch.no_grad():
+        for test_image, test_label in test_loader:
+            predictions = model(test_image.to(device))
+
+            loss = criterion(predictions, test_label.to(device))
+
+            total_loss += loss.item()
+
+    model.train()
+
+    return total_loss / len(test_loader)

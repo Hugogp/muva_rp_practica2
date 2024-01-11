@@ -24,7 +24,7 @@ class CustomDataset(torch.utils.data.Dataset):
             v2.ToImage(),
             v2.RandomHorizontalFlip(),
             v2.RandomRotation(10),
-            # v2.RandomCrop(32, padding=4),
+            # v2.RandomCrop((150, 150), padding=4),
             v2.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
         ])(img)
 

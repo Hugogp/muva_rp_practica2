@@ -14,23 +14,24 @@ from src.utils import save_model, get_model_name, get_output_file_without_ext, s
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # Hyper parameters
-num_epochs = 50
+num_epochs = 100
 batch_size = 512
-learning_rate = 1e-5
+learning_rate = 1e-6
 
 
 # Number of classes to classify
 num_classes = 5
 
 # Select the model
-model = CNNExtra(num_classes).to(device)
+model = AlexNet(num_classes).to(device)
 
 # Train the model
 print(f"Training \"{get_model_name(model)}\" on \"{device}\"...")
 
 train_path = "images/train"
-accuracy, total_test_images, losses = train_test_nn(model, train_path=train_path, epochs=num_epochs, batch_size=batch_size,
-                                                    learning_rate=learning_rate, device=device)
+accuracy, total_test_images, losses, test_losses = train_test_nn(model, train_path=train_path, epochs=num_epochs,
+                                                                 batch_size=batch_size, learning_rate=learning_rate,
+                                                                 device=device)
 
 print("Accuracy of the network on the {} test images: {:.4f}%".format(total_test_images, accuracy))
 
@@ -40,4 +41,4 @@ save_training(model, "./outputs", accuracy, losses, {
     "batch_size": batch_size,
     "learning_rate": learning_rate,
     "accuracy": accuracy,
-})
+}, test_losses)

@@ -12,12 +12,11 @@ from src.neuralnetworks.CNN import CNN
 from src.neuralnetworks.cnn_extra_layers import CNNExtra
 
 
-model_path = "./outputs/full/CNNExtra_2024_01_04_22_28_13.pt"
-# model_path = "./outputs/full/CNNExtra_2024_01_02_18_35_11.pt"
-# model_path = "./outputs/full/AlexNet_2024_01_02_20_43_38.pt"
-# path = "./outputs/CNNExtra_2023_12_31_12_48_00.ckpt"
+model_path = "outputs/full/ReXNetV1_2024_01_11_18_41_47.pt"
 test_dir = "./images/test"
 images = []
+
+print("Starting up testing...")
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -36,8 +35,6 @@ for image_path in natsorted(os.listdir(test_dir)):
     ])(image)
 
     images.append(image)
-
-print(images[0].shape)
 
 model = torch.load(model_path)
 model.eval()

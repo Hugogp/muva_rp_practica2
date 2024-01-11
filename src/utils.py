@@ -46,7 +46,7 @@ def get_training_data(train_path: str) -> ([str], [int]):
     return training_paths, training_labels
 
 
-def save_training(model, folder: str, accuracy: float, losses: [float], hyperparameters: dict):
+def save_training(model, folder: str, accuracy: float, losses: [float], hyperparameters: dict, test_losses=None):
     output_path = get_output_file_without_ext(folder, model)
 
     print(f"Saving model & data at \"{output_path}\"")
@@ -64,6 +64,11 @@ def save_training(model, folder: str, accuracy: float, losses: [float], hyperpar
     display_and_save_losses(losses, "{}: {:.4f}% accuracy".format(get_model_name(model), accuracy),
                             f"{output_path}.png")
 
+    if test_losses:
+        # Display & save the test loss graph if any are provided
+        display_and_save_losses(test_losses, "[TEST] {}: {:.4f}% accuracy".format(get_model_name(model), accuracy),
+                                f"{output_path}_TEST.png")
+
 
 def save_model(file_path: str, model):
     torch.save(model, f"{file_path}.pt")
@@ -75,9 +80,9 @@ def save_hyperparameters(file_path: str, hyperparameters: dict):
             file.write(f"{key}: {value}\n")
 
 
-def get_output_file_without_ext(folder: str, model) -> str:
+def get_output_file_without_ext(folder: str, model, file_prefix: str = "") -> str:
     time = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
-    file_name = f"{get_model_name(model)}_{time}"
+    file_name = f"{file_prefix}{get_model_name(model)}_{time}"
 
     return os.path.join(folder, file_name)
 
