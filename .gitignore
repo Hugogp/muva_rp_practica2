@@ -1,5 +1,6 @@
 images/
 outputs/
+NO_ENTREGAR/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

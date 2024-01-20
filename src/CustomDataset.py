@@ -4,6 +4,8 @@ import torch
 from torchvision.transforms import v2
 from pathlib import Path
 
+from src.constants import IMAGES_WIDTH, IMAGES_HEIGHT
+
 
 class CustomDataset(torch.utils.data.Dataset):
     def __init__(self, paths: [str], labels: [str]):
@@ -32,7 +34,7 @@ class CustomDataset(torch.utils.data.Dataset):
 
     @staticmethod
     def custom_normalize(img) -> []:
-        img = cv.resize(img, (150, 150))
+        img = cv.resize(img, (IMAGES_WIDTH, IMAGES_HEIGHT))
 
         if img.dtype == np.uint8():
             img = img.astype(np.float32()) / 255.0

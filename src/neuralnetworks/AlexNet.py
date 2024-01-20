@@ -1,5 +1,6 @@
 from torch import nn
 
+
 class AlexNet(nn.Module):
     """
     Neural network model consisting of layers propsed by AlexNet paper.

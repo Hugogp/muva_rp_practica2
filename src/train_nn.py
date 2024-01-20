@@ -2,6 +2,7 @@ import time
 import torch
 import torch.nn as nn
 
+from src.constants import IMAGES_WIDTH, IMAGES_HEIGHT
 from src.utils import get_dataloaders, get_training_data, generate_data_loader
 
 
@@ -87,7 +88,7 @@ def _calculate_test_score(test_loader, device, model) -> (float, int):
         total = 0
 
         for images, labels in test_loader:
-            images = images.view(-1, 3, 150, 150).to(device)
+            images = images.view(-1, 3, IMAGES_WIDTH, IMAGES_HEIGHT).to(device)
 
             # Convert string labels to numerical indices
             labels = labels.to(device)

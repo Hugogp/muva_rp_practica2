@@ -6,13 +6,14 @@ from natsort import natsorted
 from torchvision.transforms import v2
 
 from src.CustomDataset import CustomDataset
+from src.constants import IMAGES_HEIGHT, IMAGES_WIDTH
 from src.labels import index_to_label, get_labels_distribution
 from src.neuralnetworks.AlexNet import AlexNet
 from src.neuralnetworks.CNN import CNN
 from src.neuralnetworks.cnn_extra_layers import CNNExtra
 
 
-model_path = "outputs/full/ReXNetV1_2024_01_11_18_41_47.pt"
+model_path = "outputs/full/CoAtNet_2024_01_16_16_53_22.pt"
 test_dir = "./images/test"
 images = []
 
@@ -39,7 +40,7 @@ for image_path in natsorted(os.listdir(test_dir)):
 model = torch.load(model_path)
 model.eval()
 
-images = torch.from_numpy(np.array(images)).view(-1, 3, 150, 150).to(device)
+images = torch.from_numpy(np.array(images)).view(-1, 3, IMAGES_WIDTH, IMAGES_HEIGHT).to(device)
 
 labels = []
 for image in images:

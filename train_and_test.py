@@ -4,6 +4,7 @@ from src.graphs import display_and_save_losses
 
 from src.neuralnetworks.AlexNet import AlexNet
 from src.neuralnetworks.CNN import CNN
+from src.neuralnetworks.CoAtNet import coatnet_0, coatnet_1, coatnet_4
 from src.neuralnetworks.RexNet import ReXNetV1
 from src.neuralnetworks.cnn_extra_layers import CNNExtra
 from src.train_nn import train_test_nn
@@ -14,16 +15,16 @@ from src.utils import save_model, get_model_name, get_output_file_without_ext, s
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # Hyper parameters
-num_epochs = 100
-batch_size = 512
-learning_rate = 1e-6
+num_epochs = 50
+batch_size = 64
+learning_rate = 1e-5
 
 
 # Number of classes to classify
 num_classes = 5
 
 # Select the model
-model = AlexNet(num_classes).to(device)
+model = coatnet_0(num_classes).to(device)
 
 # Train the model
 print(f"Training \"{get_model_name(model)}\" on \"{device}\"...")
