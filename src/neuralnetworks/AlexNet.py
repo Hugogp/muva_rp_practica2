@@ -1,6 +1,14 @@
 from torch import nn
 
 
+"""
+THIRD PARTY CODE
+
+This whole file (except some changes to the layer sizes so they match our image sizes) have been acquired from:
+https://github.com/dansuh17/alexnet-pytorch/blob/d0c1b1c52296ffcbecfbf5b17e1d1685b4ca6744/model.py#L40
+"""
+
+
 class AlexNet(nn.Module):
     """
     Neural network model consisting of layers propsed by AlexNet paper.

@@ -11,6 +11,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+"""
+THIRD PARTY CODE
+
+This whole file (except some changes to the layer sizes so they match our image sizes) have been acquired from:
+https://github.com/kuangliu/pytorch-cifar/blob/master/models/resnet.py
+"""
+
+
 class BasicBlock(nn.Module):
     expansion = 1
 

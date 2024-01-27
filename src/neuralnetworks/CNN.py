@@ -4,6 +4,15 @@ import torchvision
 import torchvision.transforms as transforms
 
 
+"""
+THIRD PARTY CODE
+
+This whole file (except some changes to the layer sizes so they match our image sizes) have been acquired from
+the pytorch tutorial of "Fundamentos matemáticos"
+"""
+
+
+
 class CNN(nn.Module):
     def __init__(self, num_classes):
         super(CNN, self).__init__()
