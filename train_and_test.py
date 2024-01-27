@@ -15,8 +15,8 @@ from src.utils import save_model, get_model_name, get_output_file_without_ext, s
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # Hyper parameters
-num_epochs = 50
-batch_size = 64
+num_epochs = 1000
+batch_size = 256
 learning_rate = 1e-5
 
 
@@ -24,7 +24,7 @@ learning_rate = 1e-5
 num_classes = 5
 
 # Select the model
-model = coatnet_0(num_classes).to(device)
+model = CNNExtra(num_classes).to(device)
 
 # Train the model
 print(f"Training \"{get_model_name(model)}\" on \"{device}\"...")

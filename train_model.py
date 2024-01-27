@@ -22,8 +22,7 @@ learning_rate = 1e-5
 num_classes = 5
 
 # Select the model
-model = coatnet_1(num_classes).to(device)
-# model = torch.load("outputs/full/AlexNet_2024_01_04_22_26_34.pt")
+model = CNNExtra(num_classes).to(device)
 
 # Train the model
 print(f"Training \"{get_model_name(model)}\" on \"{device}\"...")

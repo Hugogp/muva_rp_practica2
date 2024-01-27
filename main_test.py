@@ -13,7 +13,7 @@ from src.neuralnetworks.CNN import CNN
 from src.neuralnetworks.cnn_extra_layers import CNNExtra
 
 
-model_path = "outputs/full/CoAtNet_2024_01_16_16_53_22.pt"
+model_path = "outputs/full/CoAtNet_2024_01_16_16_37_47.pt"
 test_dir = "./images/test"
 images = []
 
@@ -32,7 +32,7 @@ for image_path in natsorted(os.listdir(test_dir)):
 
     image = v2.Compose([
         v2.ToImage(),
-        v2.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        v2.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     ])(image)
 
     images.append(image)
