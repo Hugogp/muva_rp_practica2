@@ -3,6 +3,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 import re
 
+# ** codigo de terceros ! **
+"""
+THIRD PARTY CODE
+
+This whole file (except some changes to the layer sizes so they match our image sizes) have been acquired from:
+https://github.com/vballoli/nfnets-pytorch
+"""
+
 nfnet_params = {
     'F0': {
         'width': [256, 512, 1536, 1536], 'depth': [1, 2, 6, 3],

@@ -41,6 +41,10 @@ def only_train_nn(model, train_path: str, epochs: int, batch_size: int, learning
 
 
 def _run_training(train_loader, num_epochs, device, model, criterion, optimizer, test_loader=None) -> [float]:
+    """
+    Runs the training for the given model and with the given parameters.
+    Will also try to generate a test score if the test_loader is provided.
+    """
     loss = None
     losses = []
     test_losses = [] if test_loader else None
@@ -84,7 +88,9 @@ def _run_training(train_loader, num_epochs, device, model, criterion, optimizer,
 
 
 def _calculate_test_score(test_loader, device, model) -> (float, int):
-    # Test the model
+    """
+    Calculate the test score for the model.
+    """
     # In test phase, we don't need to compute gradients (for memory efficiency)
     model.eval()
 
@@ -108,6 +114,9 @@ def _calculate_test_score(test_loader, device, model) -> (float, int):
 
 
 def _calculate_loss_score(model, test_loader, criterion, device) -> float:
+    """
+    Calculate the loss score for the model.
+    """
     model.eval()
 
     total_loss = 0.0

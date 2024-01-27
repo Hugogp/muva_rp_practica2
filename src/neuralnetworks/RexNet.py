@@ -3,6 +3,15 @@ import torch.nn as nn
 from math import ceil
 
 
+# ** codigo de terceros ! **
+"""
+THIRD PARTY CODE
+
+This whole file (except some changes to the layer sizes so they match our image sizes) have been acquired from:
+https://github.com/clovaai/rexnet
+"""
+
+
 @torch.jit.script
 def silu_fwd(x):
     return x.mul(torch.sigmoid(x))

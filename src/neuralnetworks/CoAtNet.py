@@ -6,9 +6,14 @@ from einops.layers.torch import Rearrange
 
 from src.constants import IMAGES_WIDTH, IMAGES_HEIGHT
 
+# ** codigo de terceros ! **
 """
-Red sacada de https://github.com/chinhsuanwu/coatnet-pytorch/blob/master/coatnet.py
-Paper y más info: https://paperswithcode.com/paper/coatnet-marrying-convolution-and-attention
+THIRD PARTY CODE
+
+This whole file have been acquired from:
+https://github.com/chinhsuanwu/coatnet-pytorch/blob/master/coatnet.py
+
+Paper & more info: https://paperswithcode.com/paper/coatnet-marrying-convolution-and-attention
 """
 
 

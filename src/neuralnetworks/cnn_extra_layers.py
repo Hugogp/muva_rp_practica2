@@ -1,6 +1,11 @@
 import torch.nn as nn
 
 
+"""
+Inspired from the CNN (CNN.py), but with added layers (by us).
+"""
+
+
 class CNNExtra(nn.Module):
     def __init__(self, num_classes):
         super(CNNExtra, self).__init__()

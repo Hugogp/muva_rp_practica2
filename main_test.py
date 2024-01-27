@@ -19,11 +19,14 @@ images = []
 
 print("Starting up testing...")
 
+# Select the device to use
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
+# Prepare all the images (in the correct order)
 for image_path in natsorted(os.listdir(test_dir)):
     full_image_path = os.path.join(test_dir, image_path)
 
+    # Skip files that are not images
     if not image_path.endswith(".jpg"):
         continue
 
@@ -37,11 +40,14 @@ for image_path in natsorted(os.listdir(test_dir)):
 
     images.append(image)
 
+# Load the model
 model = torch.load(model_path)
 model.eval()
 
+# Move the images to the device
 images = torch.from_numpy(np.array(images)).view(-1, 3, IMAGES_WIDTH, IMAGES_HEIGHT).to(device)
 
+# Calculate each model prediction
 labels = []
 for image in images:
     outputs = model(image.unsqueeze(0))
@@ -51,6 +57,9 @@ for image in images:
 
     labels.append(prediction)
 
+# Show the distribution of the labels
+# We have prior knowledge that the distribution should be around 100 for each class
 print(get_labels_distribution(labels))
 
+# Save the file
 np.savetxt("Competicion2.txt", labels, fmt="%s", delimiter=",")

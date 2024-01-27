@@ -1,6 +1,7 @@
 from torch import nn
 
 
+# ** codigo de terceros ! **
 """
 THIRD PARTY CODE
 
@@ -11,7 +12,7 @@ https://github.com/dansuh17/alexnet-pytorch/blob/d0c1b1c52296ffcbecfbf5b17e1d168
 
 class AlexNet(nn.Module):
     """
-    Neural network model consisting of layers propsed by AlexNet paper.
+    Neural network model consisting of layers proposed by AlexNet paper.
     """
     def __init__(self, num_classes):
         """
