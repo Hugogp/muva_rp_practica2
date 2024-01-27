@@ -11,10 +11,12 @@ from src.labels import label_to_index
 def get_dataloaders(train_path: str, batch_size: int):
     training_paths, training_labels = get_training_data(train_path)
 
+    # Split de data into training and testing
     train_data_paths, test_data_paths, train_labels, test_labels = train_test_split(
         training_paths, training_labels, test_size=0.2, random_state=42
     )
 
+    # Generate the data loaders
     train_loader = generate_data_loader(train_data_paths, train_labels, batch_size)
     test_loader = generate_data_loader(test_data_paths, test_labels, 1)
 
@@ -40,7 +42,10 @@ def get_training_data(train_path: str) -> ([str], [int]):
             if not training_image.endswith(".jpg"):
                 continue
 
+            # Get the full path of the image
             training_paths.append(os.path.join(full_training_dir, training_image))
+
+            # Get the label of the image
             training_labels.append(label_to_index(training_dir))
 
     return training_paths, training_labels
@@ -71,16 +76,19 @@ def save_training(model, folder: str, accuracy: float, losses: [float], hyperpar
 
 
 def save_model(file_path: str, model):
+    """ Save the full model """
     torch.save(model, f"{file_path}.pt")
 
 
 def save_hyperparameters(file_path: str, hyperparameters: dict):
+    """ Save the hyperparametres of the training """
     with open(f"{file_path}.txt", "w") as file:
         for key, value in hyperparameters.items():
             file.write(f"{key}: {value}\n")
 
 
 def get_output_file_without_ext(folder: str, model, file_prefix: str = "") -> str:
+    """ Prepare the output format """
     time = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
     file_name = f"{file_prefix}{get_model_name(model)}_{time}"
 

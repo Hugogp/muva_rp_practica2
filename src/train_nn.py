@@ -13,9 +13,11 @@ def train_test_nn(model, train_path: str, epochs: int, batch_size: int, learning
 
     train_loader, test_loader = get_dataloaders(train_path, batch_size)
 
+    # Run training and obtain losses
     losses, test_losses = _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion,
                                         optimizer=optimizer, test_loader=test_loader)
 
+    # Calculate test accuracy and total images tested
     accuracy, total_images_test = _calculate_test_score(test_loader, model=model, device=device)
 
     return accuracy, total_images_test, losses, test_losses
@@ -27,8 +29,11 @@ def only_train_nn(model, train_path: str, epochs: int, batch_size: int, learning
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
     training_paths, training_labels = get_training_data(train_path)
+
+    # Generate the data loader for training
     train_loader = generate_data_loader(training_paths, training_labels, batch_size)
 
+    # Get the loads
     losses, _ = _run_training(train_loader, model=model, num_epochs=epochs, device=device, criterion=criterion,
                               optimizer=optimizer, test_loader=None)
 
